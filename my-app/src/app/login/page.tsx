@@ -2,36 +2,17 @@
 import { useState } from 'react';
 import Header from '../components/Header';
 import TextInput from '../components/TextInput';
+import { useLogin } from '@/hooks/useLogin';
 export default function LoginPage() {
-  const [email, setEmail] = useState(''); // 기본적으로 string 타입으로 추론함
-  const [emailError, setEmailError] = useState<string | null>(null); // string 또는 null 타입으로
-  const [password, setPassword] = useState('');
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const newValue = event.target.value;
-    setEmail(newValue);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(newValue)) {
-      setEmailError('올바른 이메일을 입력하세요.');
-    } else {
-      setEmailError(null); // 오류가 없을 경우 null로 설정
-    }
-  };
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    const username = formData.get('username') as string;
-    const password = formData.get('password') as string;
-
-    // 간단한 로그인 처리 로직
-    if (username === 'admin' && password === 'password') {
-      alert('로그인 성공!');
-    } else {
-      alert('로그인 실패: 아이디와 비밀번호를 확인하세요.');
-    }
-  };
-
+  const {
+    email,
+    emailError,
+    password,
+    PasswordError,
+    onEmailChange,
+    onPasswordChange,
+    handleLogin,
+  } = useLogin();
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Main Content */}
@@ -45,7 +26,7 @@ export default function LoginPage() {
               label="이메일"
               value={email}
               placeholder="이메일을 입력하세요"
-              onChange={handleEmailChange}
+              onChange={onEmailChange}
               error={emailError}
             />
             <TextInput
@@ -53,7 +34,10 @@ export default function LoginPage() {
               name="password"
               label="비밀번호"
               type="password"
+              value={password}
+              onChange={onPasswordChange}
               placeholder="비밀번호를 입력하세요"
+              error={PasswordError}
             />
             <button
               type="submit"
