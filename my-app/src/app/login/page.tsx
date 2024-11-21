@@ -1,24 +1,30 @@
 'use client';
-import { useState } from 'react';
-import Header from '../components/Header';
 import TextInput from '../components/TextInput';
 import { useLogin } from '@/hooks/useLogin';
+import { useInput } from '@/hooks/useInput';
+useState;
+import { validateEmail, validatePassword } from '@/utils/validations';
+import { useState } from 'react';
 export default function LoginPage() {
   const {
-    email,
-    emailError,
-    password,
-    PasswordError,
-    onEmailChange,
-    onPasswordChange,
-    handleLogin,
-  } = useLogin();
+    value: email,
+    error: emailError,
+    handleValueChange: handleEmailChange,
+  } = useInput('', validateEmail);
+  const {
+    value: password,
+    error: passwordError,
+    handleValueChange: handlePasswordChange,
+  } = useInput('', validatePassword);
+
+  const { handleLogin } = useLogin();
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Main Content */}
       <main className="flex flex-1 flex-col items-center">
         <div className="w-full max-w-sm mt-20">
           <h1 className="text-2xl font-bold mb-6 text-center">로그인</h1>
+          {/* <h1>{process.env.DATABASE_URL}</h1> */}
           <form onSubmit={handleLogin}>
             <TextInput
               id="email"
@@ -26,7 +32,7 @@ export default function LoginPage() {
               label="이메일"
               value={email}
               placeholder="이메일을 입력하세요"
-              onChange={onEmailChange}
+              onChange={handleEmailChange}
               error={emailError}
             />
             <TextInput
@@ -35,9 +41,9 @@ export default function LoginPage() {
               label="비밀번호"
               type="password"
               value={password}
-              onChange={onPasswordChange}
+              onChange={handlePasswordChange}
               placeholder="비밀번호를 입력하세요"
-              error={PasswordError}
+              error={passwordError}
             />
             <button
               type="submit"

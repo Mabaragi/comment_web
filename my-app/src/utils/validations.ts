@@ -1,11 +1,14 @@
 /**
  * 이메일 형태를 검증하는 함수
- * @param password - 검증할 비밀번호 문자열
- * @returns 비밀번호가 유효하면 true, 그렇지 않으면 false
+ * @param email - 검증할 이메일 문자열
+ * @returns 유효하면 null, 유효하지 않으면 에러 메시지
  */
-export const validateEmail = (email: string): boolean => {
+export const validateEmail = (email: string): string | null => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  if (!emailRegex.test(email)) {
+    return '유효한 이메일을 입력해주세요.';
+  }
+  return null;
 };
 
 /**
@@ -20,8 +23,11 @@ export const validateEmail = (email: string): boolean => {
  * @param password - 검증할 비밀번호 문자열
  * @returns 비밀번호가 유효하면 true, 그렇지 않으면 false
  */
-export const validatePassword = (password: string): boolean => {
+export const validatePassword = (password: string): string | null => {
   const passwordRegex =
     /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return passwordRegex.test(password);
+  if (!passwordRegex.test(password)) {
+    return '유효한 이메일을 입력해주세요.';
+  }
+  return null;
 };

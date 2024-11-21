@@ -3,17 +3,20 @@
 import { useState } from 'react';
 import TextInput from '../components/TextInput';
 import { useSignup } from '@/hooks/useSignup';
+import { useInput } from '@/hooks/useInput';
+import { validateEmail, validatePassword } from '@/utils/validations';
 export default function SignupPage() {
   const {
-    email,
-    emailError,
-    password,
-    passwordError,
-    onEmailChange,
-    onPasswordChange,
-    handleLogin,
-  } = useSignup();
-
+    value: email,
+    error: emailError,
+    handleValueChange: handleEmailChange,
+  } = useInput('', validateEmail);
+  const {
+    value: password,
+    error: passwordError,
+    handleValueChange: handlePasswordChange,
+  } = useInput('', validatePassword);
+  const { handleLogin } = useSignup();
   return (
     <div className="min-h-screen flex items-center justify-center bg-yellow-100 px-4">
       <div className="w-full max-w-md bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-8">
@@ -26,7 +29,7 @@ export default function SignupPage() {
             name="email"
             label="이메일"
             value={email}
-            onChange={onEmailChange}
+            onChange={handleEmailChange}
             placeholder="이메일을 입력하세요"
             error={emailError}
           />
@@ -36,7 +39,7 @@ export default function SignupPage() {
             label="비밀번호"
             type="password"
             value={password}
-            onChange={onPasswordChange}
+            onChange={handlePasswordChange}
             placeholder="비밀번호를 입력하세요"
             error={passwordError}
           />
