@@ -2,10 +2,7 @@
 import TextInput from '../components/TextInput';
 import { useLogin } from '@/hooks/useLogin';
 import { useInput } from '@/hooks/useInput';
-
-useState;
 import { EmailValidator, PasswordValidator } from '@/utils/validations';
-import { useState } from 'react';
 export default function LoginPage() {
   const emailValidator = new EmailValidator();
   const passwordValidator = new PasswordValidator();

@@ -1,4 +1,4 @@
-import React, { HTMLInputTypeAttribute, InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes } from 'react';
 
 interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
