@@ -1,4 +1,3 @@
-import { validateEmail, validatePassword } from './validations';
 import { EmailInputHandler, PasswordInputHandler } from './types';
 
 /**
