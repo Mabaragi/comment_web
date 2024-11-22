@@ -12,3 +12,11 @@ export const signupSchema = z.object({
     .min(8, '8자 이상어야아 합니다.')
     .regex(/[@$!%*?&]/, '특수문자 하나를 반드시 포함해 주세요.'),
 });
+
+export const loginSchema = z.object({
+  email: z.string().email('유효한 이메일을 입력하세요.'),
+  password: z
+    .string()
+    .min(8, '8자 이상어야아 합니다.')
+    .regex(/[@$!%*?&]/, '특수문자 하나를 반드시 포함해 주세요.'),
+});

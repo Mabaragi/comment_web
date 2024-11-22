@@ -1,23 +1,21 @@
 'use client';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema } from '@/schemas/user';
 import TextInput from '../components/TextInput';
-import { useLogin } from '@/hooks/useLogin';
-import { useInput } from '@/hooks/useInput';
-import { EmailValidator, PasswordValidator } from '@/utils/validations';
 export default function LoginPage() {
-  const emailValidator = new EmailValidator();
-  const passwordValidator = new PasswordValidator();
-  const {
-    value: email,
-    error: emailError,
-    handleValueChange: handleEmailChange,
-  } = useInput('', emailValidator);
-  const {
-    value: password,
-    error: passwordError,
-    handleValueChange: handlePasswordChange,
-  } = useInput('', passwordValidator);
+  // 1. Zod 스키마를 기반으로 타입 추론
+  type SignupForm = z.infer<typeof loginSchema>;
 
-  const { handleLogin } = useLogin();
+  // 2. react-hook-form 초기화
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupForm>({
+    resolver: zodResolver(loginSchema), // Zod를 통한 유효성 검증
+  });
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Main Content */}
@@ -25,25 +23,23 @@ export default function LoginPage() {
         <div className="w-full max-w-sm mt-20">
           <h1 className="text-2xl font-bold mb-6 text-center">로그인</h1>
           {/* <h1>{process.env.DATABASE_URL}</h1> */}
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleSubmit(() => {})}>
             <TextInput
               id="email"
               name="email"
               label="이메일"
-              value={email}
               placeholder="이메일을 입력하세요"
-              onChange={handleEmailChange}
-              error={emailError}
+              {...register}
+              error={errors.email?.message}
             />
             <TextInput
               id="password"
               name="password"
               label="비밀번호"
               type="password"
-              value={password}
-              onChange={handlePasswordChange}
               placeholder="비밀번호를 입력하세요"
-              error={passwordError}
+              {...register}
+              error={errors.password?.message}
             />
             <button
               type="submit"
