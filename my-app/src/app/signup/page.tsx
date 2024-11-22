@@ -1,47 +1,50 @@
 'use client';
-
-import { useState } from 'react';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signupSchema } from '@/schemas/user';
 import TextInput from '../components/TextInput';
-import { useSignup } from '@/hooks/useSignup';
-import { useInput } from '@/hooks/useInput';
-import { validateEmail, validatePassword } from '@/utils/validations';
 export default function SignupPage() {
+  // 1. Zod 스키마를 기반으로 타입 추론
+  type SignupForm = z.infer<typeof signupSchema>;
+
+  // 2. react-hook-form 초기화
   const {
-    value: email,
-    error: emailError,
-    handleValueChange: handleEmailChange,
-  } = useInput('', validateEmail);
-  const {
-    value: password,
-    error: passwordError,
-    handleValueChange: handlePasswordChange,
-  } = useInput('', validatePassword);
-  const { handleLogin } = useSignup();
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupForm>({
+    resolver: zodResolver(signupSchema), // Zod를 통한 유효성 검증
+  });
+  const onSubmit = () => {};
   return (
     <div className="min-h-screen flex items-center justify-center bg-yellow-100 px-4">
       <div className="w-full max-w-md bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-8">
         <h1 className="text-3xl text-center font-semibold text-gray-800 mb-6">
           회원가입
         </h1>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             id="email"
-            name="email"
             label="이메일"
-            value={email}
-            onChange={handleEmailChange}
             placeholder="이메일을 입력하세요"
-            error={emailError}
+            {...register('email')} // react-hook-form과 연결
+            error={errors.email?.message} // 에러 메시지 출력
+          />
+          <TextInput
+            id="name"
+            label="이름"
+            {...register('name')}
+            placeholder="이름을 입력하세요"
+            error={errors.name?.message}
           />
           <TextInput
             id="password"
-            name="password"
             label="비밀번호"
             type="password"
-            value={password}
-            onChange={handlePasswordChange}
             placeholder="비밀번호를 입력하세요"
-            error={passwordError}
+            {...register('password')}
+            error={errors.password?.message}
           />
           <button
             type="submit"

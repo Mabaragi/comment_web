@@ -7,11 +7,11 @@ services:
       - '3001:3000'
     environment:
       - DATABASE_URL=postgresql://postgres:password@db:5432/mydb
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - db
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
 
   db:
     image: postgres:15

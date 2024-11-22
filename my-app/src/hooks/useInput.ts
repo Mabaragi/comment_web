@@ -1,9 +1,7 @@
 import { useState } from 'react';
+import { Validator } from '@/utils/validations';
 
-export const useInput = (
-  initialValue: string,
-  validator: (value: string) => string | null,
-) => {
+export const useInput = (initialValue: string, validator: Validator) => {
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState<string | null>(null); // string 또는 null 타입으로
 
@@ -13,7 +11,7 @@ export const useInput = (
   const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const newValue = event.target.value;
-    setError(validator(newValue));
+    setError(validator.validate(newValue));
     setValue(newValue);
   };
 
