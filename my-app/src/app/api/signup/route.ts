@@ -1,18 +1,12 @@
-import { singupVlidator } from '@/utils/validations';
+import { signupSchema } from '@/schemas/user';
 import { NextResponse } from 'next/server';
-singupVlidator;
-export async function POST(request) {
+
+export async function POST(request: Request) {
   try {
     const body = await request.json();
 
     // 입력 데이터 검증
-    const { error, value } = signupValidator.validate(body);
-    if (error) {
-      return NextResponse.json(
-        { message: error.details[0].message },
-        { status: 400 },
-      );
-    }
+    const parseData = signupSchema.parse(body);
 
     // 회원가입 로직 (예: 데이터베이스에 사용자 저장)
     const user = await signupApi(value);

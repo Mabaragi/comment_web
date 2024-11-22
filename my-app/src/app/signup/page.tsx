@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema } from '@/schemas/user';
+import { registerUser } from './api';
 import TextInput from '../components/TextInput';
 export default function SignupPage() {
   // 1. Zod 스키마를 기반으로 타입 추론
@@ -16,14 +17,13 @@ export default function SignupPage() {
   } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema), // Zod를 통한 유효성 검증
   });
-  const onSubmit = () => {};
   return (
     <div className="min-h-screen flex items-center justify-center bg-yellow-100 px-4">
       <div className="w-full max-w-md bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-8">
         <h1 className="text-3xl text-center font-semibold text-gray-800 mb-6">
           회원가입
         </h1>
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-4" onSubmit={handleSubmit(registerUser)}>
           <TextInput
             id="email"
             label="이메일"
